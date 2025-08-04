@@ -1,0 +1,40 @@
+# .github/workflows/deploy.yml
+
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ] # Trigger the workflow on push to the main branch
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use a current LTS version of Node.js
+          cache: 'npm'
+
+      - name: Install dependencies 📦
+        run: npm ci # 'ci' is faster and safer for CI environments
+
+      - name: Build website 🚀
+        run: npm run build
+
+      - name: Upload artifact ⬆️
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './_site' # The folder Eleventy builds to
+
+      - name: Deploy to GitHub Pages 🚀
+        id: deployment
+        uses: actions/deploy-pages@v4
