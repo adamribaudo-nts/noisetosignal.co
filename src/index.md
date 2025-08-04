@@ -6,13 +6,13 @@ layout: base.njk
 <!-- Header/Navigation -->
 <div class="head">
   <div class="l">
-    <div class="flex items-center space-x-3 h-full pl-6">
+    <div class="flex items-center space-x-3 h-full py-4 pl-6">
       <img src="/img/radar-80px-dark.png" alt="Noise to Signal" class="w-8 h-8">
-      <span class="text-lg font-semibold">Noise to Signal</span>
+      <span class="text-lg font-light">Noise to Signal</span>
     </div>
   </div>
   <div class="r">
-    <nav class="flex items-center justify-end h-full pr-6 space-x-8">
+    <nav class="flex items-center justify-end h-full py-4 pr-6 space-x-8">
       <span class="current-page">Home</span>
       <a href="#">Portfolio</a>
     </nav>
