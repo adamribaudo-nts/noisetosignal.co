@@ -4,10 +4,10 @@
   "main": "index.js",
   "scripts": {
     "env:setup": "nvm use && npm install",
-    "build:css": "cp src/css/styles.css _site/css/styles.css",
+    "build:css": "mkdir -p _site/css && cp src/css/styles.css _site/css/styles.css",
     "build:11ty": "eleventy",
     "build": "npm run build:11ty && npm run build:css",
-    "dev:css": "cp src/css/styles.css _site/css/styles.css",
+    "dev:css": "mkdir -p _site/css && cp src/css/styles.css _site/css/styles.css",
     "dev:11ty": "eleventy --serve",
     "dev": "npm run build:css && concurrently \"npm run dev:11ty\"",
     "test": "echo \"Error: no test specified\" && exit 1"
