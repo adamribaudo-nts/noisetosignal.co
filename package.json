@@ -1,0 +1,31 @@
+{
+  "name": "noisetosignal.co",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "env:setup": "nvm use && npm install",
+    "build:css": "cp src/css/styles.css _site/css/styles.css",
+    "build:11ty": "eleventy",
+    "build": "npm run build:11ty && npm run build:css",
+    "dev:css": "cp src/css/styles.css _site/css/styles.css",
+    "dev:11ty": "eleventy --serve",
+    "dev": "npm run build:css && concurrently \"npm run dev:11ty\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamribaudo-nts/noisetosignal.co.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adamribaudo-nts/noisetosignal.co/issues"
+  },
+  "homepage": "https://github.com/adamribaudo-nts/noisetosignal.co#readme",
+  "description": "",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
+    "concurrently": "^9.2.0"
+  }
+}
