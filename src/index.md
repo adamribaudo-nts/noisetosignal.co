@@ -119,10 +119,10 @@ layout: base.njk
       <img src="/img/radar-80px-light.png" alt="Noise to Signal" class="w-20 h-20 mx-auto">
     </div>
     <nav class="mb-4">
-      <div class="flex flex-wrap justify-center space-x-6 text-sm uppercase tracking-wide">
-        <a href="#" class="hover:text-gray-300">Home</a>
-        <a href="#" class="hover:text-gray-300">Portfolio</a>
-        <a href="#contact" class="hover:text-gray-300">Contact</a>
+      <div class="flex flex-wrap justify-center space-x-8">
+        <span class="current-page">Home</span>
+        <a href="#">Portfolio</a>
+        <a href="#contact">Contact</a>
       </div>
     </nav>
     <p class="text-sm text-gray-400">

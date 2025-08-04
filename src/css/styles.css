@@ -53,6 +53,7 @@ body {
 .h-8 { height: 2rem; }
 .h-20 { height: 5rem; }
 .h-screen { height: 100vh; }
+.min-h-\[300px\] { min-height: 300px; }
 
 .max-w-md { max-width: 28rem; }
 .max-w-4xl { max-width: 56rem; }
@@ -69,6 +70,9 @@ body {
 }
 .space-x-8 > :not([hidden]) ~ :not([hidden]) {
   margin-left: 2rem;
+}
+.space-x-12 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 3rem;
 }
 .space-y-6 > :not([hidden]) ~ :not([hidden]) {
   margin-top: 1.5rem;
@@ -268,4 +272,8 @@ body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea {
   color: rgb(99, 99, 99);
   text-decoration: none;
   font-weight: normal;
+}
+
+footer a {
+  color: white;
 }
