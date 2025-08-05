@@ -404,3 +404,10 @@ footer a {
     font-size: 1.125rem;
   }
 }
+
+/* Hide Contact link on small screens */
+@media (max-width: 400px) {
+  .contact-link {
+    display: none;
+  }
+}

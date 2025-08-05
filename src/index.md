@@ -49,7 +49,7 @@ current: home
   <div class="absolute inset-0 bg-black bg-opacity-60"></div>
   <div class="relative z-10 max-w-6xl mx-auto">
     <h2 class="text-3xl font-bold text-center mb-12">What We Believe</h2>
-    <div class="grid md:grid-cols-3 gap-8 text-sm leading-relaxed">
+    <div class="grid md:grid-cols-3 gap-8 leading-relaxed">
       <div>
         <p>
           <strong>Noise to Signal</strong> believes that every marketer can be a marketing technologist. We guide marketers through the ever-changing technology landscape in order to select and implement tools that make their teams more effective.
