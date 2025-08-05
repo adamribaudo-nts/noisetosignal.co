@@ -129,4 +129,4 @@ layout: base.njk
       <em>Bringing clarity to marketers in a noisy world © 2025</em>
     </p>
   </div>
-</footer>
+</footer> 
