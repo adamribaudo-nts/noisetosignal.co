@@ -277,3 +277,130 @@ body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea {
 footer a {
   color: white;
 }
+
+/* Portfolio-specific styles */
+.stack {
+  display: table;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.stack article {
+  display: table-cell;
+  width: 50%;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.stack article.mod-dark {
+  background-color: rgb(45, 45, 45);
+  color: white;
+}
+
+.stack article.plot {
+  text-align: left;
+}
+
+.stack article h2 {
+  font-size: 1.875rem;
+  font-weight: 400;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.stack article h3.dwarf {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 1rem 0;
+}
+
+.stack article h3.mod-alt {
+  color: #77bbaa;
+}
+
+.stack article p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.stack article .mod-wide img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Quote sections */
+.call {
+  background-color: rgb(45, 45, 45);
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.call::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.call article,
+.call span {
+  position: relative;
+  z-index: 2;
+}
+
+.call article {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.call article p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-style: italic;
+  margin: 0;
+}
+
+.call .dwarf {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-top: 2rem;
+  opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .stack {
+    display: block;
+  }
+  
+  .stack article {
+    display: block;
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+  
+  .call {
+    padding: 2rem 1rem;
+  }
+  
+  .call article p {
+    font-size: 1.125rem;
+  }
+}

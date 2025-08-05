@@ -1,24 +1,9 @@
 ---
 title: Noise to Signal – Bringing clarity to marketers in a noisy world
 layout: base.njk
+current: home
 ---
 
-<!-- Header/Navigation -->
-<div class="head">
-  <div class="l">
-    <div class="flex items-center space-x-3 h-full py-4 pl-6">
-      <img src="/img/radar-80px-dark.png" alt="Noise to Signal" class="w-8 h-8">
-      <span class="text-lg font-light">Noise to Signal</span>
-    </div>
-  </div>
-  <div class="r">
-    <nav class="flex items-center justify-end h-full py-4 pr-6 space-x-8">
-      <span class="current-page">Home</span>
-      <a href="#">Portfolio</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
-</div>
 
 <!-- Hero Section -->
 <section class="screen" style="background-image: url('/img/nasa-dishes-2048.jpg');">
@@ -95,38 +80,21 @@ layout: base.njk
 </section>
 
 <!-- Section 5 - Contact Form -->
-<section id="contact" class="relative px-8" style="background-image: url('/img/nasa-dishes-2048.jpg'); background-size: cover; background-position: bottom; background-repeat: no-repeat; height: 400px;">
+<section id="contact" class="relative px-8" style="background-image: url('/img/nasa-dishes-2048.jpg'); background-size: cover; background-position: center top; background-repeat: no-repeat; height: 400px;">
   <div class="absolute inset-0 bg-black bg-opacity-30"></div>
   <div class="relative z-10 h-full flex items-center justify-center">
-    <a href="#" id="contact-email" class="inline-block bg-white text-gray-800 px-8 py-3 font-semibold hover:bg-gray-100 transition-colors">
-      Contact Us
-    </a>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var user = 'adam';
-        var domain = 'noisetosignal.co';
-        var email = user + '@' + domain;
-        document.getElementById('contact-email').href = 'mailto:' + email;
-      });
-    </script>
+    <div class="text-center">
+      <h2 class="text-3xl font-bold text-white mb-8">Contact</h2>
+      <div class="flex items-center justify-center space-x-8">
+        <a href="mailto:adam@noisetosignal.co" class="text-white hover:opacity-80 transition-opacity" title="Email adam@noisetosignal.co">
+          <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+            <path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/adamribaudo/" target="_new" class="text-white hover:opacity-80 transition-opacity" title="LinkedIn">
+          <img src="/img/InBug-White.png" alt="LinkedIn" class="w-8 h-8">
+        </a>
+      </div>
+    </div>
   </div>
 </section>
-
-<!-- Footer -->
-<footer class="py-8 px-8 text-center text-white" style="background-color: rgba(45, 45, 45, 0.8);">
-  <div class="max-w-4xl mx-auto">
-    <div class="mb-6">
-      <img src="/img/radar-80px-light.png" alt="Noise to Signal" class="w-20 h-20 mx-auto">
-    </div>
-    <nav class="mb-4">
-      <div class="flex flex-wrap justify-center space-x-8">
-        <span class="current-page">Home</span>
-        <a href="#">Portfolio</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </nav>
-    <p class="text-sm text-gray-400">
-      <em>Bringing clarity to marketers in a noisy world © 2025</em>
-    </p>
-  </div>
-</footer> 
