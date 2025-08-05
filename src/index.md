@@ -24,7 +24,7 @@ current: home
       <img src="/img/radar-80px-dark.png" alt="Noise to Signal Logo" class="w-20 h-20 mx-auto">
     </div>
     <p class="text-lg leading-relaxed mb-8">
-      <strong>Noise to Signal</strong> is your marketing technologist for hire. Our work accelerates your marketing efforts through the thoughtful implementation of technology, measurement, and testing.
+      <strong>Noise to Signal</strong> is your martech team for hire. Our work accelerates your growth efforts through the thoughtful implementation of technology, analytics, and experimentation. We're experts in the modern marketing stack who help our clients build scalable data and marketing solutions.
     </p>
     <a href="#contact" class="inline-block bg-gray-800 text-white px-8 py-3 hover:bg-opacity-90 transition-colors">
       Reach Out
@@ -57,12 +57,12 @@ current: home
       </div>
       <div>
         <p>
-          Grounded in the tenets of <a href="#" class="text-blue-300 underline">Agile Marketing</a>, we provide marketers with the processes and tools necessary to make data-driven decisions that incrementally improve website and campaign performance.
+          Grounded in the tenets of the <a href="https://www.snowflake.com/en/the-modern-marketing-data-stack-report/" class="text-blue-300 underline">Modern Marketing Stack</a>, we provide marketers with the processes and tools necessary to make data-driven decisions that incrementally improve website and campaign performance.
         </p>
       </div>
       <div>
         <p>
-          Throughout this process, we bridge the gap between marketing and IT so that each team reaches their mutual objectives: a successful, secure, and reliable digital marketing program.
+          Throughout this process, we bridge the gap between marketing, data and IT so that each team reaches their mutual objectives: a successful, secure, and reliable growth program.
         </p>
       </div>
     </div>
@@ -74,7 +74,7 @@ current: home
   <div class="max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold mb-8">Services</h2>
     <p class="text-lg leading-relaxed">
-      Digital Strategy, Analytics, Data Engineering, A/B Testing, Personalization, PPC, Digital Project Management, Technology Evaluation, API Integrations, System Design
+      Data Strategy, MarTech Leadership, Analytics Engineering, Data Engineering, A/B Testing, Personalization, PPC Tagging & Measurement, AI Analytics Solution, CDP Selection & Implementation, Product Analytics, Google Analytics 4
     </p>
   </div>
 </section>
