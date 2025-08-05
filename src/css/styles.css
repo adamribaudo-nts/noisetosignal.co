@@ -406,7 +406,7 @@ footer a {
 }
 
 /* Hide Contact link on small screens */
-@media (max-width: 400px) {
+@media (max-width: 520px) {
   .contact-link {
     display: none;
   }
