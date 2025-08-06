@@ -52,7 +52,7 @@ current: portfolio
   <article class="plot">
     <h2>Zaniac Learning</h2>
     <h3 class="dwarf caps mod-alt">Services: PPC, Google Analytics Configuration and Analysis, Conversion Optimization</h3>
-    <p>Zaniac Learning's Asheville campus provides STEM learning courses to K-8 kids in order to jump-start their interest in math, science, and robotics. Since 2016, Noise to Signal has provided PPC services promoting their Summer camps and after school programs. Part of this work involved implementing e-commerce tracking to better understand ROI on ad spend. The results? 300% return on ad spend with accurate reporting across platforms.</p>
+    <p>Zaniac Learning's Asheville campus provides STEM learning courses to K-8 kids in order to jump-start their interest in math, science, and robotics. Noise to Signal provided PPC services promoting their Summer camps and after school programs. Part of this work involved implementing e-commerce tracking to better understand ROI on ad spend. The results? 300% return on ad spend with accurate reporting across platforms.</p>
     <h3 class="dwarf caps">Platforms: Google Analytics, Unbounce, Facebook Ads, AdWords</h3>
   </article>
 </section>
@@ -70,13 +70,13 @@ current: portfolio
   <article class="plot">
     <h2>GODAN Secretariat</h2>
     <h3 class="dwarf caps mod-alt">Services: Website design, implementation, and hosting</h3>
-    <p>GODAN is leader in the global fight against hunger. In 2016, GODAN approached Noise to Signal with an urgent need to create a website for their annual Summit. The results? Noise to Signal was able to quickly turn around all services necessary to design, host, and launch GODAN's summit website.</p>
+    <p>GODAN is leader in the global fight against hunger. GODAN approached Noise to Signal with an urgent need to create a website for their annual Summit. The results? Noise to Signal was able to quickly turn around all services necessary to design, host, and launch GODAN's summit website.</p>
     <h3 class="dwarf caps">Platforms: WordPress, Google Analytics, Google Tag Manager</h3>
   </article>
   <article class="plot mod-dark">
     <h2>Stages Learning Materials</h2>
     <h3 class="dwarf caps mod-alt">Services: PPC Marketing, Conversion Optimization, Analytics Analysis & Reporting, HubSpot & Shopify Configuration</h3>
-    <p>Stages Learning Materials produces educational products for adults and children with autism spectrum disorder. Starting in 2015, Noise to Signal began to rationalize the data flowing between Stages' various marketing platforms. Once that data could be trusted, Noise to Signal took ownership of Stages' PPC campaigns. The results? A 76% increase in leads generated per month and accurate reporting from each system involved.</p>
+    <p>Stages Learning Materials produces educational products for adults and children with autism spectrum disorder. As part of the this engagement, Noise to Signal rationalized the data flowing between Stages' various marketing platforms. Once that data could be trusted, Noise to Signal took ownership of Stages' PPC campaigns. The results? A 76% increase in leads generated per month and accurate reporting from each system involved.</p>
     <h3 class="dwarf caps">Platforms: Google Analytics, AdWords, Facebook Ads, Pinterest Ads, HubSpot, Shopify</h3>
   </article>
 </section>
