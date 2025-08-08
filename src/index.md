@@ -80,12 +80,12 @@ current: home
 </section>
 
 <!-- Section 5 - Contact Form -->
-<section id="contact" class="relative px-8" style="background-image: url('/img/nasa-dishes-2048.jpg'); background-size: cover; background-position: center top; background-repeat: no-repeat; height: 400px;">
+<section id="contact" class="relative px-8 py-16" style="background-image: url('/img/nasa-dishes-2048.jpg'); background-size: cover; background-position: center top; background-repeat: no-repeat;">
   <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-  <div class="relative z-10 h-full flex items-center justify-center">
+  <div class="relative z-10 max-w-4xl mx-auto">
     <div class="text-center">
       <h2 class="text-3xl font-bold text-white mb-8">Contact</h2>
-      <div class="flex items-center justify-center space-x-8">
+      <div class="flex items-center justify-center space-x-8 mb-8">
         <a href="mailto:adam@noisetosignal.co" class="text-white hover:opacity-80 transition-opacity" title="Email adam@noisetosignal.co">
           <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
             <path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z"/>
@@ -96,5 +96,62 @@ current: home
         </a>
       </div>
     </div>
+
+    <!-- Simple contact form -->
+    <form id="contact-form" action="https://nts-website-contact-form.twilight-wind-6f08.workers.dev/" method="POST" class="max-w-md mx-auto bg-white text-black p-8">
+      <div class="mb-4">
+        <label for="contact-email" class="block text-sm mb-2">Your email</label>
+        <input type="email" id="contact-email" name="email" required placeholder="you@company.com" class="w-full border border-gray-400 px-3 py-3 focus:outline-none" />
+      </div>
+      <div class="mb-6">
+        <label for="contact-message" class="block text-sm mb-2">What do you need help with?</label>
+        <textarea id="contact-message" name="message" rows="4" required placeholder="Briefly describe your needs" class="w-full border border-gray-400 px-3 py-3 focus:outline-none resize-none placeholder-gray-300"></textarea>
+      </div>
+      <div class="space-y-6">
+        <button type="submit" class="inline-block bg-gray-800 text-white px-6 py-3 hover:bg-opacity-90 transition-colors">Send</button>
+        <p id="contact-error" class="text-sm text-gray-600 hidden">There was a problem sending your message. Please try again.</p>
+      </div>
+    </form>
+
+    <!-- Thank you message -->
+    <div id="contact-success" class="max-w-md mx-auto bg-white text-black p-8 text-center hidden" role="status" aria-live="polite">
+      <p class="text-lg">Thanks for reaching out. We'll be in touch shortly.</p>
+    </div>
   </div>
 </section>
+
+<script>
+  (function(){
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    const successEl = document.getElementById('contact-success');
+    const errorEl = document.getElementById('contact-error');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      if (errorEl) errorEl.classList.add('hidden');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+      try {
+        const resp = await fetch(form.action || '#', {
+          method: (form.method || 'POST').toUpperCase(),
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json, text/plain, */*' }
+        });
+        // Consider any 2xx a success; otherwise show error
+        if (!resp.ok) throw new Error('Request failed');
+        form.classList.add('hidden');
+        if (successEl) successEl.classList.remove('hidden');
+      } catch (err) {
+        if (errorEl) errorEl.classList.remove('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send';
+        }
+      }
+    });
+  })();
+  </script>
