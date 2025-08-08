@@ -163,6 +163,27 @@ Add custom CSS to `src/css/styles.css`. The file includes utility classes simila
 4. Build: \`npm run build\`
 5. Commit and push
 
-## 📄 License
+# Contact Form Service
+This repository contains the code for a serverless contact form service powered by Cloudflare Workers. It handles form submissions from a website, stores the data in a Cloudflare KV store, and sends an email notification via the Mailgun API.
 
-ISC
+## Features
+Serverless Architecture: The entire backend runs on a Cloudflare Worker, eliminating the need for a dedicated server.
+
+Secure Data Storage: Form submissions are securely stored in Cloudflare's Key-Value (KV) store.
+
+Email Notifications: Sends an email to a specified recipient via Mailgun whenever a new form submission is received.
+
+CORS Enabled: Configured to accept submissions from a specific domain and a localhost development environment.
+
+## How It Works
+A user submits a form on your website.
+
+The form's action attribute points to the Cloudflare Worker URL.
+
+The Cloudflare Worker receives the POST request.
+
+The Worker parses the form data, extracts the email and message, and stores them as a JSON object in a Cloudflare KV namespace.
+
+Immediately after storing the data, the Worker makes a fetch request to the Mailgun API to send an email notification to the designated email address.
+
+The Worker responds to the form submission with a success or error status.
