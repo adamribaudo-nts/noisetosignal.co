@@ -47,6 +47,12 @@
         <a href="/portfolio.html">Portfolio</a>
       {% endif %}
       
+      {% if current == 'services' %}
+        <span class="current-page">Data &amp; AI Services</span>
+      {% else %}
+        <a href="/services.html">Data &amp; AI Services</a>
+      {% endif %}
+      
       <a href="/index.html#contact" class="contact-link">Contact</a>
     </nav>
   </div>
@@ -73,6 +79,12 @@
           <span class="current-page">Portfolio</span>
         {% else %}
           <a href="/portfolio.html">Portfolio</a>
+        {% endif %}
+        
+        {% if current == 'services' %}
+          <span class="current-page">Data &amp; AI Services</span>
+        {% else %}
+          <a href="/services.html">Data &amp; AI Services</a>
         {% endif %}
         
         <a href="/index.html#contact">Contact</a>
