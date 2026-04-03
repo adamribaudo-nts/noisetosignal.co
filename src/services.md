@@ -18,8 +18,8 @@ current: services
       <p class="text-lg leading-relaxed text-white mb-8" style="opacity: 0.9;">
         The future of data isn't another dashboard — it's an intelligent, conversational interface powered by a robust semantic layer. We provide Data-Modeling-as-a-Service to help businesses bypass the traditional BI backlog and connect Large Language Models directly to a governed, single source of truth.
       </p>
-      <a href="/index.html#contact" class="inline-block bg-gray-800 text-white px-8 py-3 hover:bg-opacity-90 transition-colors">
-        Book a Strategy Session
+      <a href="https://calendar.app.google/R1dLgiQqYbFmBvC5A" target="_blank" class="inline-block bg-gray-800 text-white px-8 py-3 hover:bg-opacity-90 transition-colors">
+        Book a Meeting
       </a>
     </div>
   </div>
@@ -63,7 +63,7 @@ current: services
 </section>
 
 <!-- What This Unlocks -->
-<section class="relative py-16 px-8 text-white" style="background-image: url('/img/6-twilight.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+<section class="relative py-16 px-8 text-white" style="background-image: url('/img/landscape-dish.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
   <div class="absolute inset-0 bg-black bg-opacity-60"></div>
   <div class="relative z-10 max-w-6xl mx-auto">
     <h2 class="text-3xl font-bold text-center mb-12">What This Unlocks</h2>
@@ -125,8 +125,8 @@ current: services
     <p class="text-lg text-white leading-relaxed mb-8">
       Stop solving data problems with more dashboards. Give stakeholders the power to converse directly with a governed, accurate, and scalable data model.
     </p>
-    <a href="/index.html#contact" class="inline-block bg-gray-800 text-white px-8 py-3 hover:bg-opacity-90 transition-colors">
-      Schedule Your Assessment
+    <a href="https://calendar.app.google/R1dLgiQqYbFmBvC5A" target="_blank" class="inline-block bg-gray-800 text-white px-8 py-3 hover:bg-opacity-90 transition-colors">
+      Book a Meeting
     </a>
   </div>
 </section>
