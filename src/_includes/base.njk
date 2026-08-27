@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or "Noise to Signal – Bringing clarity to marketers in a noisy world" }}</title>
+    {% if description %}<meta name="description" content="{{ description }}">{% endif %}
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
@@ -52,7 +53,13 @@
       {% else %}
         <a href="/services.html">Data &amp; AI Services</a>
       {% endif %}
-      
+
+      {% if current == 'ideas' %}
+        <span class="current-page">Ideas</span>
+      {% else %}
+        <a href="/ideas.html">Ideas</a>
+      {% endif %}
+
       <a href="https://calendar.app.google/R1dLgiQqYbFmBvC5A" target="_blank" class="contact-link">Book a Meeting</a>
     </nav>
   </div>
@@ -86,7 +93,13 @@
         {% else %}
           <a href="/services.html">Data &amp; AI Services</a>
         {% endif %}
-        
+
+        {% if current == 'ideas' %}
+          <span class="current-page">Ideas</span>
+        {% else %}
+          <a href="/ideas.html">Ideas</a>
+        {% endif %}
+
         <a href="https://calendar.app.google/R1dLgiQqYbFmBvC5A" target="_blank">Book a Meeting</a>
       </div>
     </nav>

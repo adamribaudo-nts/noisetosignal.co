@@ -1,0 +1,274 @@
+---
+title: "The 4 Questions to Ask Before Deploying Semantic Layers in Production – Noise to Signal"
+description: "Lessons from two production deployments of agentic analytics: four questions to ask before deploying a semantic layer, comparing dbt and Malloy/Credible."
+layout: base.njk
+permalink: /ideas/semantic-layers-in-production/
+current: ideas
+---
+
+<!-- Hero Section -->
+<section class="screen article-hero" style="background-image: url('/img/6-twilight.jpg');">
+  <div class="mod-fill" style="opacity: 0.2; background: linear-gradient(45deg, #7FB8FF, #E8C0ED);"></div>
+  <div class="screen-mid">
+    <article class="plot">
+      <span style="font-size: 50px; line-height: 45px;" class="caps mod-frame text-white">Ideas</span>
+    </article>
+  </div>
+</section>
+
+<!-- Article -->
+<article class="article-body">
+  <h1>The 4 Questions to Ask Before Deploying Semantic Layers in Production</h1>
+  <div class="article-meta caps">August 2026 &middot; Adam Ribaudo</div>
+
+{% raw %}
+<p>Recently, semantic layers have come roaring back onto the scene. Previously characterized as nice-to-have infrastructure that only enterprise data teams could afford to maintain, they’ve since proven themselves as a critical ingredient for agentic analytics.</p>
+
+<p>Despite this, it’s relatively uncommon for data practitioners to find mature, production deployments of semantic layers in the wild. Over the last year, I’ve rolled out two different agentic analytics systems backed by semantic layers from two different vendors and thought I could share my experience. These are lessons learned from real deployments and all of the messy and surprising ways that business users interact with them.</p>
+
+<p>I’ve organized the comparison across four questions you should ask of your overall solution design:</p>
+
+<ul>
+  <li>What can an agent ask?</li>
+  <li>What can an agent know?</li>
+  <li>What can’t an agent do?</li>
+  <li>How does the platform run?</li>
+</ul>
+
+<p>The semantic layer you choose has a material impact on the answers to these questions. While the comparisons below are applied to two specific vendors, you can bring these questions to any solution you may be developing.</p>
+
+<p>First, let me introduce the vendors.</p>
+
+<h3>dbt</h3>
+
+<p>dbt hardly needs any introduction as it has dominated the data tooling conversation for half a decade. However, its capabilities as a semantic layer are less well known. This feature arrived through the 2023 acquisition of Transform, whose MetricFlow engine powers it today. MetricFlow itself went Apache 2.0 in late 2025, though the serving APIs remain a paid dbt Cloud feature. The 2026 Fivetran merger repositions the combined company around trusted data for AI agents.</p>
+
+<h3>Malloy and Credible Data</h3>
+
+<p><a href="https://www.malloydata.dev/">Malloy</a> is a semantic modeling and query language created by Lloyd Tabb, Looker&#x27;s founder and the creator of LookML. It was open-sourced under the MIT license in 2021. <a href="https://www.credibledata.com/">Credible Data</a>, founded in 2025 by Kyle Nesbit (who led BI and data analytics for Google Cloud), is the commercial company behind it. Credible maintains the open-source Malloy Publisher server, raised a $10M seed in July 2026, and open-sourced its entire agent layer the same month.</p>
+
+<h2>The Four Questions</h2>
+
+<h3>1. What can an agent ask?</h3>
+
+<h4>Query language vs. metric catalog</h4>
+
+<p>Different semantic layers expose different vocabularies for how an agent might request data. As a comparison point, <a href="https://docs.getdbt.com/blog/semantic-layer-vs-text-to-sql-2026">raw SQL has been proven to be such an unbounded vocabulary as to introduce errors</a> in agentic systems. A semantic layer intentionally narrows the vocabulary to reduce error. In order of vocabulary size from smallest to largest we have:</p>
+
+<ul>
+  <li>dbt’s metric catalog</li>
+  <li>Malloy</li>
+  <li>SQL (no semantic layer)</li>
+</ul>
+
+<p>dbt&#x27;s semantic layer accepts a parameterized request. These are pre-defined metrics, group-by dimensions, and filters that are compiled to SQL. There are no custom aggregations, no nesting, and no query chaining. Contrast that with Malloy which is a query language. It provides the grammar necessary to express grouping, aggregation, nested breakdowns, window functions, and multi-stage pipelines. For an agent translating a messy business question, the test is two-fold:</p>
+
+<ul>
+  <li>Can the vocabulary express the analysis required?</li>
+  <li>Is the vocabulary so large as to introduce errors?</li>
+</ul>
+
+<p>Too small a vocabulary and you risk not meeting the needs of your users. Too large of a vocabulary and your agent may introduce errors made possible by the language complexity. The examples below are what your agent will need to produce to successfully request data from each tool.</p>
+
+<h4>dbt request shape:</h4>
+
+<pre><code>{
+  &quot;tool&quot;: &quot;query_metrics&quot;,
+  &quot;arguments&quot;: {
+    &quot;metrics&quot;: [&quot;revenue&quot;, &quot;order_count&quot;],
+    &quot;group_by&quot;: [
+      { &quot;name&quot;: &quot;metric_time&quot;, &quot;grain&quot;: &quot;MONTH&quot; },
+      { &quot;name&quot;: &quot;product__category&quot; }
+    ],
+    &quot;where&quot;: &quot;{{ Dimension(&#x27;order__status&#x27;) }} = &#x27;completed&#x27;&quot;,
+    &quot;order_by&quot;: [&quot;metric_time&quot;]
+  }
+}</code></pre>
+
+<h4>Malloy query shape:</h4>
+
+<pre><code>run: orders -&gt; {
+  where: status = &#x27;completed&#x27;
+  group_by:
+    order_month is order_date.month
+    product.category
+  aggregate: revenue, order_count
+  order_by: order_month
+}</code></pre>
+
+<p>In my experience, Malloy provides a goldilocks effect whereby you have the expressibility of SQL with the guardrails in place to prevent the errors introduced by text-to-SQL approaches. The choice will depend on the needs of the business, however.</p>
+
+<h4>Metrics vs. sources as the atomic unit of reuse</h4>
+
+<p>Semantic layers are built up from atomic, reusable units of work. The shape and mechanics of these units define what you can express and what you’re left governing once your semantic layer is “done”.</p>
+
+<p>dbt’s atom is the metric. Define “revenue” once and dbt can calculate it correctly across any combination of pre-defined dimensions and filters at the specified time grain. For a catalog of straightforward aggregations serving static assets (ie. a dashboard) this is exactly the right shape. This shows strain, however, when the framing of a question changes the metric definition. Supplying “% of revenue from new customers” cannot be derived from your “revenue” metric. Instead, we need two new metrics: “pct_revenue_new_customers” and “revenue_new_customers”. As the domain of questions grows, so does the metric catalog. The resulting variations of “revenue” then undercut the promise of a single, clean, easy-to-govern metric catalog.</p>
+
+<p>Malloy&#x27;s atom is the source. A source wraps an entity like orders, customers, or products with its joins, dimensions, and measures. In this case, &quot;revenue&quot; is defined once as a measure associated with “orders” rather than published as a standalone metric. &quot;% of revenue from new customers&quot; therefore requires no new modeling even if the question was not anticipated. It&#x27;s the same governed measure with filtered ratio components composed at query time. The net effect is less churn within the semantic model itself. The model changes when the business changes, not when the questions change.</p>
+
+<pre><code>run: orders -&gt; {
+   aggregate: pct_new is revenue { where: customer.is_new } / all(revenue)
+ }</code></pre>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Atomic unit</strong> — Metric</td><td><strong>Atomic unit</strong> — Source (measures + dimensions)</td></tr>
+  <tr><td><strong>Same math, new use case</strong> — Another named metric</td><td><strong>Same math, new use case</strong> — Same measure, refined at query time</td></tr>
+  </tbody>
+</table></div>
+
+<h3>2. What can an agent know?</h3>
+
+<h4>Business context: where it lives and how it reaches the agent</h4>
+
+<p>Accurate answers to messy questions depend on the agent understanding the business context behind the data. These are the caveats, assumptions, and traps that a veteran analyst holds in their head. Getting that knowledge to the agent at query time, inside a finite context window, becomes the next challenge after establishing the agent’s query vocabulary.</p>
+
+<p>dbt gives this knowledge exactly one place to live: description strings associated with metrics. These are delivered alongside the full list of metrics returned from the “list_metrics” MCP tool. With this information loaded into context, the agent judges the relevance of each metric based on the description. For small catalogs, this is easy to reason over. At scale, descriptions swell into multi-paragraph operating manuals which can impact LLM attention and token costs.</p>
+
+<p>Malloy attaches text annotations to any primitive: sources, dimensions, measures, pre-defined queries, or views. Its serving layer, Malloy Publisher, then provides a getContext function that accepts a natural language question and returns only the relevant sources, views, dimensions, and measures using text embeddings. This becomes a major advantage in scaled environments where large lists of metrics and business entities compete for agent attention. However, for smaller data models, the question-embeddings-results loop adds unnecessary weight and latency. Fortunately, operators can always fall back to parsing the Malloy annotations directly which produces similar full-text results as dbt.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Context slots: </strong>description as strings</td><td><strong>Context slots: </strong>entity annotations as typed tags</td></tr>
+  <tr><td><strong>Small deployments: </strong>Descriptions easily fit in agent context</td><td><strong>Small Deployments: </strong>Read full entity annotations as strings</td></tr>
+  <tr><td><strong>At scale:</strong> Agent risks attention drift. </td><td><strong>At scale</strong>: Searchable annotations via embeddings</td></tr>
+  <tr><td><strong>Discovery</strong> — Enumerate the catalog</td><td><strong>Discovery</strong> — Retrieve a question-scoped slice</td></tr>
+  </tbody>
+</table></div>
+
+<h4>The skill layer</h4>
+
+<p>The semantic layer alone is never enough for an agent to meaningfully engage with a business user. The consuming agent needs a second layer: vocabulary, disambiguation rules, query strategy, verification habits, tone. Both dbt and Credible now publish agent skills, but they ship different things. dbt&#x27;s <a href="https://github.com/dbt-labs/dbt-agent-skills">dbt-agent-skills</a> is a collection primarily focused on operating dbt itself. This includes skills for building models, migrating engines, and running commands. The craft an agent requires remains the data team&#x27;s to write and hand-install. Credible ships with that layer: <a href="https://www.credibledata.com/blog/posts/open-sourcing-malloy-agents">thirty skills</a> co-designed with five MCP tools (&quot;agents reason, skills guide, tools retrieve&quot;), decomposing general analytical craft into governed, portable pieces, while business meaning stays in the model&#x27;s annotations. That said, neither vendor understands your business and there is always work remaining to be done in bringing that domain knowledge to bear.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>What ships: </strong>Skills for operating dbt (building models, migrating engines, running commands)</td><td><strong>What ships: </strong>Skills for the analysis itself (query patterns, verification, chart selection)</td></tr>
+  <tr><td><strong>Analyst craft: </strong>One natural-language query skill; the rest is the team’s to write and hand-install</td><td><strong>Analyst craft: </strong>Thirty skills decomposing it into portable pieces</td></tr>
+  <tr><td><strong>Design: </strong>A collection layered on the existing MCP server</td><td><strong>Design: </strong>Co-designed with the tools (“agents reason, skills guide, tools retrieve”)</td></tr>
+  <tr><td><strong>Still yours: </strong>Your business’s vocabulary and domain knowledge</td><td><strong>Still yours: </strong>Your business’s vocabulary and domain knowledge</td></tr>
+  </tbody>
+</table></div>
+
+<h3>3. What can’t an agent do?</h3>
+
+<h4>Deterministic control</h4>
+
+<p>Some controls over agent behavior are too important to entrust to a prompt. For example, masking columns, or limiting queries to specific data snapshots. Malloy&#x27;s model parameters (“<a href="https://docs.malloydata.dev/documentation/experiments/givens">givens</a>”) let the host application inject those values alongside the query. These parameters are outside the LLM&#x27;s reach and applied no matter what query the agent writes. dbt has no request-time equivalent, so the modeler&#x27;s choices are fixed at build time.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Request-time control</strong> — None (saved queries are frozen)</td><td><strong>Request-time control</strong> — Givens, injected by the host app</td></tr>
+  <tr><td><strong>Guarantee</strong> — Whatever was decided at build time</td><td><strong>Guarantee</strong> — Deterministic, per-request, beyond the LLM&#x27;s reach</td></tr>
+  </tbody>
+</table></div>
+
+<p>While not a requirement for every project, deterministic control wrapped around a probabilistic behavior can level up the overall reliability of the system.</p>
+
+<h4>Information hiding</h4>
+
+<p>Context engineering is a game of hide and seek. Your goal as the engineer is to hide unnecessary information from the agent until it’s necessary. dbt and Credible approach this problem differently.</p>
+
+<p>dbt hides information "for free" in that nothing is visible to the agent until components of your data model are promoted to the semantic model. This closed-by-default world ensures that SL information is exposed to an agent as an intentional act from an engineer. This avoids the possibility of accidentally exposing internal mechanics/transformations that would waste agent context and attention.</p>
+
+<p>Malloy serves as both a data model AND a semantic layer. When both are exposed to an agent, you risk sharing details that are unnecessary at best or misleading at worst. There are two mechanisms that help prevent this:</p>
+
+<ul>
+  <li><a href="https://docs.malloydata.dev/documentation/experiments/include&#x27;">Access Modifiers</a> - Field-level controls that change the visibility of fields. Set to: public, internal, or private.</li>
+  <li><a href="https://www.credibledata.com/docs/how-to/modeling/fine-grained-acls">Access Control</a> -  Source-level controls that change the visibility of sources, rows, or columns. Affords role-based row-level access or column masking.</li>
+</ul>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Mechanism</strong> — Implicit — promotion is the gate</td><td><strong>Mechanism</strong> — Explicit — public: / internal: / private:</td></tr>
+  <tr><td><strong>Granularity</strong> — In or out, for every consumer</td><td><strong>Granularity</strong> — Per definition, binding at the language level</td></tr>
+  </tbody>
+</table></div>
+
+<p>In this case, dbt&#x27;s rigidity pays a dividend in that visibility controls are structural from the start. But Malloy&#x27;s expressiveness affords more variety in that query inputs (such as the user executing the query) can dynamically change model visibility.</p>
+
+<h4>Correctness guardrails</h4>
+
+<p>Confidently wrong answers are the death knell of any agentic analytics pilot. The first time the CEO uses your chat agent and spots an obvious flaw is also the last time the CEO will use your chat agent. For this reason, you need to understand what guardrails are in place to avoid common query pitfalls. The most common trap being incorrect aggregations due to query fan-out.</p>
+
+<p>Both dbt and Malloy target this failure but with opposite philosophies. dbt prevents the query by building the join graph itself and avoiding fan-outs entirely. With this, the agent can&#x27;t write the dangerous join because it can&#x27;t write joins at all.</p>
+
+<p>Malloy makes the query safe: aggregates across join_many compile to <a href="https://www.credibledata.com/docs/concepts/why-malloy#correct-by-construction">symmetric </a><a href="https://www.credibledata.com/docs/concepts/why-malloy#correct-by-construction">aggregates</a>, so totals stay correct during fan-out. The risk ends up not being correctness, but cost. The warehouse still materializes the joined product, and a multi-way fan-out can balloon to tens of millions of intermediate rows before aggregation.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Philosophy</strong> — Prevent the query</td><td><strong>Philosophy</strong> — Make the query safe</td></tr>
+  <tr><td><strong>Residual cost</strong> — Expressiveness</td><td><strong>Residual cost</strong> — Vigilance about query cost</td></tr>
+  </tbody>
+</table></div>
+
+<h3>4. How does the platform run?</h3>
+
+<h4>API &amp; MCP access and auth</h4>
+
+<p>How your agents and users connect to the semantic layer can have a major impact on your security and traceability posture. Both dbt and Malloy/Credible offer direct API access as well as MCP endpoints. However, the identity mechanisms are entirely different. dbt&#x27;s hosted server is provisioned with a single static service token which means that every connection shares an identity. This also results in a plaintext token written into every MCP client’s configuration. In contrast, Credible’s hosted MCP service provides per-user OAuth which affords auditability, individual revocation, and least privilege.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Identity</strong> — One static shared token</td><td><strong>Identity</strong> — Per-user OAuth</td></tr>
+  <tr><td><strong>Provisioning</strong> — MCP client config edits</td><td><strong>Provisioning</strong> — OAuth flow</td></tr>
+  <tr><td><strong>Audit / revocation</strong> — None / all-or-nothing</td><td><strong>Audit / revocation</strong> — Per user</td></tr>
+  </tbody>
+</table></div>
+
+<p>dbt’s service token is dead simple and makes it easy to get up and running quickly. For a pilot, the service token is fine. For an org-wide rollout, you’ll likely want to wrap the API in your own per-user authenticated flow or use a service that allows OAuth connections.</p>
+
+<h4>Cloud pricing</h4>
+
+<p>Costs shape your incentives. Are you incentivized to tightly control access to your conversational agent or share it with the whole organization? Are you incentivized to keep your semantic layer covering one problem domain or many? In this category, the comparison between dbt and Credible is asymmetrical for an obvious reason: dbt (now Fivetran) is the incumbent and Credible is the venture-funded challenger. This puts each vendor in different corners of the ring: dbt maintains per-seat + queried metric pricing while Credible offers unlimited seats, a generous free tier and usage-based pricing.</p>
+
+<p>Do I expect these positions to hold? Not really. dbt has famously tinkered with its pricing model several times over the last few years. Credible hasn’t changed its pricing yet, but it’s much younger which makes stability harder to assess. The reality of building agentic systems in 2026 is that you’re building on sand. What’s true today, whether it’s token costs or platform fees, may not be true tomorrow.</p>
+
+<div class="table-wrap"><table class="compare">
+  <thead><tr>
+    <th><strong>dbt Semantic Layer</strong></th>
+    <th><strong>Malloy / Credible</strong></th>
+  </tr></thead>
+  <tbody>
+  <tr><td><strong>Unit</strong> — Per queried metric (+ per seat)</td><td><strong>Unit</strong> — Tokens + data volume</td></tr>
+  <tr><td><strong>What&#x27;s taxed</strong> — Exploration</td><td><strong>What&#x27;s taxed</strong> — Scale</td></tr>
+  <tr><td><strong>Transparency</strong> — Plan fine print</td><td><strong>Transparency</strong> — Public, calculator-style page</td></tr>
+  </tbody>
+</table></div>
+
+<h2>Closing Thoughts</h2>
+
+<p>This article focuses on two vendors, but these comparison categories are universal. When embarking on a semantic layer and agentic analytics solution, you’ll need to consider how to balance context, correctness, and access along with many other attributes.</p>
+
+<p>A theme in many of the vendor comparisons above is that dbt offers a near-turn-key offering compelling for smaller semantic models when you’re already running dbt Cloud. Malloy / Credible on the other hand is available as a pure OSS offering with a higher ceiling in terms of the capabilities it affords. I tend to reach for those more advanced capabilities and have a preference for deploying Malloy, but the irony is that I still use dbt daily for the nuts &amp; bolts of data modeling and transformation. What’s right for you will depend on your project’s requirements.</p>
+{% endraw %}
+
+  <p class="back-link"><a href="/ideas.html">&larr; All ideas</a></p>
+</article>

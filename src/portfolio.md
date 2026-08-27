@@ -6,7 +6,7 @@ current: portfolio
 ---
 
 <!-- Hero Section -->
-<section class="screen" style="background-image: url('/img/6-twilight.jpg');">
+<section class="screen" style="background-image: url('/img/ksc-starry-night-2048.jpg');">
   <div class="mod-fill" style="opacity: 0.2; background: linear-gradient(45deg, #7FB8FF, #E8C0ED);"></div>
   <div class="screen-mid">
     <article class="plot">
@@ -15,6 +15,29 @@ current: portfolio
       <span class="text-white text-lg">This is what client success looks like</span>
     </article>
   </div>
+</section>
+
+<!-- Facing History Case Studies -->
+<section class="stack">
+  <article class="plot mod-dark">
+    <h2>Facing History &amp; Ourselves: Analytics Strategy &amp; Data Maturity</h2>
+    <h3 class="dwarf caps mod-alt">Services: Analytics Strategy, Data Warehouse Architecture, dbt Implementation, Conversion &amp; Video Tracking, Organizational Design</h3>
+    <p>Facing History &amp; Ourselves, a non-profit that uses lessons of history to challenge teachers and their students to stand up to bigotry and hate, engaged Noise to Signal to elevate the data maturity of its Marketing and Communications team. Working across a fragmented ecosystem spanning Salesforce, HubSpot, and GA4, Noise to Signal unified disparate touchpoints into a single data warehouse architecture, implemented conversion tracking for Blackthorn events and Brightcove video milestones, and established an enterprise-ready dbt project&mdash;refactoring unmaintainable daily Educator Engagement SQL into version-controlled models and a central data mart feeding business-ready Tableau reporting.</p>
+    <h3 class="dwarf caps">Platforms: Salesforce, HubSpot, Google Analytics 4, Google Tag Manager, Brightcove, dbt, BigQuery, Tableau</h3>
+  </article>
+  <article class="plot">
+    <h2>Facing History &amp; Ourselves: Conversational Analytics with AI</h2>
+    <h3 class="dwarf caps mod-alt">Services: AI Strategy, Semantic Layer Design, Data Modeling, Self-Service Analytics</h3>
+    <p>Building on a trusted data foundation, Facing History engaged Noise to Signal to pilot an AI-driven conversational analytics experience for its geographic and educator impact reporting. Noise to Signal designed dbt and BigQuery transformation pipelines that unified Salesforce and contact database records&mdash;standardizing business logic for active educator status, school district hierarchies, and custom regional territories&mdash;then exposed a curated dbt semantic layer through an MCP-connected AI client. Today, non-technical staff can answer sophisticated geographic reach questions in plain English.</p>
+    <h3 class="dwarf caps">Platforms: dbt, BigQuery, Salesforce, Model Context Protocol (MCP), Google Antigravity</h3>
+  </article>
+</section>
+
+<!-- Facing History Quote Section -->
+<section class="call mod-dark mod-accent" style="background-image: url('/img/6-twilight.jpg');">
+  <article>
+    <p></p>
+  </article>
 </section>
 
 <!-- Case Studies Section -->
